@@ -57,18 +57,25 @@
             color: #fff;
         }
 
-        /* Menu dynamique */
+        /* Style pour la modale du menu */
         .menu {
-            display: none;
+            display: none;  /* La modale est masquée par défaut */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);  /* Centrer la modale */
+            background-color: #333;
+            width: 300px;   /* Largeur de la modale */
+            height: 300px;  /* Hauteur de la modale (forme carrée) */
+            z-index: 10;
+            padding: 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease-in-out;  /* Animation pour l'apparition du menu */
+            text-align: center;
+            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            position: relative;
-            top: 20px;
-            width: 100%;
-            background-color: #333;
-            padding: 10px 0;
-            z-index: 10;
         }
 
         .menu a {
@@ -77,10 +84,10 @@
             text-decoration: none;
             text-align: center;
             font-size: 18px;
-            margin: 0 10px;
+            margin: 10px 0;
             border-radius: 5px;
             display: block;
-            width: 100%;
+            width: 80%;
             box-sizing: border-box;
         }
 
@@ -135,11 +142,6 @@
             margin-top: 20px; /* Ajout d'un espacement avant le footer */
         }
 
-        .menu-bottom {
-            margin-top: 50px; /* Augmenter l'espacement entre l'ayah et le menu */
-            z-index: 15;
-        }
-
     </style>
 </head>
 <body>
@@ -166,12 +168,10 @@
         <p class="aya-source">(سورة الأعراف: ٢٠٤)</p>
     </div>
 
-    <!-- Menu dynamique sous l'ayah -->
-    <div class="menu-bottom">
-        <div class="menu" id="menu">
-            <a href="reciteurs.html">إذاعات القرآن الكريم</a>
-            <a href="explain.html">إذاعات التفسير و السيرة</a>
-        </div>
+    <!-- Menu dynamique sous l'ayah dans une modale -->
+    <div class="menu" id="menu">
+        <a href="reciteurs.html">إذاعات القرآن الكريم</a>
+        <a href="explain.html">إذاعات التفسير و السيرة</a>
     </div>
 
   <footer>
@@ -185,14 +185,21 @@
             const menu = document.getElementById('menu');
             const menuToggle = document.querySelector('.menu-toggle');
 
-            if (menu.style.display === "flex") {
-                menu.style.display = "none";
-                menuToggle.innerHTML = "&#9776;";  // Afficher les trois barres
-            } else {
-                menu.style.display = "flex";
+            // Si la modale est masquée, on l'affiche et on change l'icône
+            if (menu.style.display === "none" || menu.style.display === "") {
+                menu.style.display = "flex";  // Afficher la modale
                 menuToggle.innerHTML = "&times;";  // Afficher la croix
+            } else {
+                menu.style.display = "none";  // Masquer la modale
+                menuToggle.innerHTML = "&#9776;";  // Afficher les trois barres
             }
         }
+
+        // Assurer que la modale est masquée au début
+        document.addEventListener('DOMContentLoaded', function() {
+            const menu = document.getElementById('menu');
+            menu.style.display = "none";  // La modale est masquée dès le début
+        });
     </script>
 </body>
 </html>
