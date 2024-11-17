@@ -11,6 +11,18 @@
             color: #fff;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* Style pour le message de salutation */
+        .greeting {
+            background-color: #333;
+            color: #28a745;
+            padding: 10px;
+            text-align: center;
+            font-size: 24px;
         }
 
         header {
@@ -19,16 +31,72 @@
             padding: 10px;
             text-align: center;
             font-size: 24px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Icône du menu et texte */
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-toggle {
+            cursor: pointer;
+            font-size: 30px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .menu-text {
+            font-size: 18px;
+            color: #fff;
+        }
+
+        /* Menu dynamique */
+        .menu {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            top: 20px;
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            z-index: 10;
+        }
+
+        .menu a {
+            color: #fff;
+            padding: 12px 20px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 18px;
+            margin: 0 10px;
+            border-radius: 5px;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .menu a:hover {
+            background-color: #218838;
         }
 
         .aya-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
-            height: calc(100vh - 100px); /* Hauteur de la page moins la hauteur du header et du footer */
+            flex: 1;
             text-align: center;
-            position: relative; /* Pour positionner le texte de confirmation par rapport à l'ayah */
+            position: relative;
+            padding-top: 30px; /* Décaler l'ayeh vers le bas */
         }
 
         .aya-intro {
@@ -45,34 +113,14 @@
         .aya-confirmation {
             font-size: 20px;
             position: absolute;
-            left: 0; /* Alignement à gauche */
-            bottom: -30px; /* Décalage vers le bas de l'ayah */
-            color: #fff; /* Même couleur que l'ayah */
+            left: 0;
+            bottom: -30px;
+            color: #fff;
         }
 
         .aya-source {
             margin-top: 10px;
             font-size: 18px;
-        }
-
-        .buttons-container {
-            margin-top: 30px;
-        }
-
-        .btn {
-            background-color: #28a745;
-            color: #fff;
-            padding: 10px 20px;
-            font-size: 18px;
-            margin: 10px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-
-        .btn:hover {
-            background-color: #218838;
         }
 
         footer {
@@ -84,25 +132,45 @@
             text-align: center;
             padding: 10px;
             font-size: 14px;
+            margin-top: 20px; /* Ajout d'un espacement avant le footer */
         }
+
+        .menu-bottom {
+            margin-top: 50px; /* Augmenter l'espacement entre l'ayah et le menu */
+            z-index: 15;
+        }
+
     </style>
 </head>
 <body>
-    <header>
+    <!-- Message de salutation -->
+    <div class="greeting">
         السلام عليكم ورحمة الله وبركاته
+    </div>
+
+    <header>
+        <!-- Icône de menu et texte centré -->
+        <div class="menu-container">
+            <span class="menu-toggle" onclick="toggleMenu()">&#9776;</span>
+            <span class="menu-text">قائمة</span>
+        </div>
     </header>
 
+    <!-- Contenu de l'ayah -->
     <div class="aya-container">
         <p class="aya-intro">يقول الله تعالى في كتابه العزيز:</p>
         <div class="aya">
-            <p>﷽<br> وَإِذَا قُرِئَ ٱلۡقُرۡءَانُ فَٱسۡتَمِعُواْ لَهُۥ وَأَنصِتُواْ لَعَلَّكُمۡ تُرۡحَمُونَ</p>
+            <p>﷽ <br> وَإِذَا قُرِئَ ٱلۡقُرۡءَانُ فَٱسۡتَمِعُواْ لَهُۥ وَأَنصِتُواْ لَعَلَّكُمۡ تُرۡحَمُونَ</p>
             <p class="aya-confirmation">صدق الله العظيم</p>
         </div>
         <p class="aya-source">(سورة الأعراف: ٢٠٤)</p>
-        
-        <div class="buttons-container">
-            <a href="reciteurs.html" class="btn">إذاعات القرآن الكريم</a>
-            <a href="explain.html" class="btn">إذاعات التفسير و السيرة</a>
+    </div>
+
+    <!-- Menu dynamique sous l'ayah -->
+    <div class="menu-bottom">
+        <div class="menu" id="menu">
+            <a href="reciteurs.html">إذاعات القرآن الكريم</a>
+            <a href="explain.html">إذاعات التفسير و السيرة</a>
         </div>
     </div>
 
@@ -110,5 +178,21 @@
     إنشاء و تصميم أخوكم في الله م.الصديق الإدريسي<br>
     لا تنسونا من صالح دعائكم و لكم بالمثل 
   </footer>
+
+    <script>
+        // Fonction pour afficher/masquer le menu
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            const menuToggle = document.querySelector('.menu-toggle');
+
+            if (menu.style.display === "flex") {
+                menu.style.display = "none";
+                menuToggle.innerHTML = "&#9776;";  // Afficher les trois barres
+            } else {
+                menu.style.display = "flex";
+                menuToggle.innerHTML = "&times;";  // Afficher la croix
+            }
+        }
+    </script>
 </body>
 </html>
