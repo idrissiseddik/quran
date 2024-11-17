@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سورة الأعراف - الآية 204</title>
+    <title>الصفحة الرئيسية</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -50,6 +50,7 @@
             font-size: 30px;
             color: #fff;
             margin-bottom: 10px;
+            transition: transform 0.3s ease; /* Animation pour le changement d'icône */
         }
 
         .menu-text {
@@ -142,6 +143,82 @@
             margin-top: 20px; /* Ajout d'un espacement avant le footer */
         }
 
+        /* Style pour l'icône WhatsApp */
+        .whatsapp-icon {
+            cursor: pointer;
+            position: fixed;
+            bottom: 80px; /* Ajouter un espace de 20px entre l'icône et le footer */
+            left: 50%;  /* Centrer l'icône horizontalement */
+            transform: translateX(-50%); /* Centrer l'icône */
+            width: 50px;
+            height: 50px;
+            z-index: 100;  /* S'assurer que l'icône est toujours au-dessus de tout autre contenu */
+        }
+
+        /* Message au-dessus de l'icône WhatsApp */
+        .whatsapp-message {
+            position: fixed;
+            bottom: 130px; /* Placer le message juste au-dessus de l'icône */
+            left: 50%;
+            transform: translateX(-50%); /* Centrer le message */
+            font-size: 16px;
+            color: #28a745;
+            text-align: center;
+            z-index: 100;
+        }
+
+        /* Style pour la modale du formulaire de contact */
+        .whatsapp-modal {
+            display: none;  /* La modale est masquée au départ */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);  /* Centrer la modale */
+            background-color: #333;
+            width: 80%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 20;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .whatsapp-modal input, .whatsapp-modal textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #28a745;
+            background-color: #222;
+            color: #fff;
+            box-sizing: border-box;
+            text-align: center; /* Centrer le texte dans les champs */
+        }
+
+        .whatsapp-modal button {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;  /* Centrer le bouton */
+        }
+
+        .whatsapp-modal button:hover {
+            background-color: #218838;
+        }
+
+        /* Icône de fermeture de la modale */
+        .whatsapp-modal .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 25px;
+            color: #fff;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -153,7 +230,7 @@
     <header>
         <!-- Icône de menu et texte centré -->
         <div class="menu-container">
-            <span class="menu-toggle" onclick="toggleMenu()">&#9776;</span>
+            <span class="menu-toggle" id="menuToggle" onclick="toggleMenu()">&#9776;</span>
             <span class="menu-text">قائمة</span>
         </div>
     </header>
@@ -174,32 +251,78 @@
         <a href="explain.html">إذاعات التفسير و السيرة</a>
     </div>
 
+    <!-- Icône WhatsApp pour ouvrir le formulaire -->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon" class="whatsapp-icon" onclick="toggleWhatsappModal()">
+
+    <!-- Formulaire de contact via WhatsApp -->
+    <div class="whatsapp-modal" id="whatsappModal">
+        <span class="close-btn" onclick="toggleWhatsappModal()">&times;</span>
+        <h3>تواصل معنا عبر واتساب</h3>
+        <form id="whatsappForm" onsubmit="handleFormSubmit(event)">
+            <input type="text" name="name" placeholder="الاسم" required>
+            <input type="tel" name="phone" placeholder="رقم الهاتف" required>
+            <input type="text" name="subject" placeholder="الموضوع" required>
+            <textarea name="message" placeholder="الرسالة" rows="5" required></textarea>
+            <button type="submit">إرسال</button>
+        </form>
+    </div>
+
   <footer>
     إنشاء و تصميم أخوكم في الله م.الصديق الإدريسي<br>
     لا تنسونا من صالح دعائكم و لكم بالمثل 
   </footer>
 
     <script>
-        // Fonction pour afficher/masquer le menu
+        // Fonction pour afficher ou masquer la modale du menu et changer l'icône
         function toggleMenu() {
-            const menu = document.getElementById('menu');
-            const menuToggle = document.querySelector('.menu-toggle');
-
-            // Si la modale est masquée, on l'affiche et on change l'icône
+            var menu = document.getElementById("menu");
+            var menuToggle = document.getElementById("menuToggle");
             if (menu.style.display === "none" || menu.style.display === "") {
-                menu.style.display = "flex";  // Afficher la modale
-                menuToggle.innerHTML = "&times;";  // Afficher la croix
+                menu.style.display = "block";
+                menuToggle.innerHTML = "&times;";  // Changer l'icône en croix
             } else {
-                menu.style.display = "none";  // Masquer la modale
-                menuToggle.innerHTML = "&#9776;";  // Afficher les trois barres
+                menu.style.display = "none";
+                menuToggle.innerHTML = "&#9776;";  // Changer l'icône en tirets
             }
         }
 
-        // Assurer que la modale est masquée au début
-        document.addEventListener('DOMContentLoaded', function() {
-            const menu = document.getElementById('menu');
-            menu.style.display = "none";  // La modale est masquée dès le début
-        });
+        // Fonction pour afficher ou masquer la modale WhatsApp
+        function toggleWhatsappModal() {
+            var modal = document.getElementById("whatsappModal");
+            if (modal.style.display === "none" || modal.style.display === "") {
+                modal.style.display = "block";
+            } else {
+                modal.style.display = "none";
+            }
+        }
+
+        // Fonction pour gérer la soumission du formulaire et rediriger vers WhatsApp
+        function handleFormSubmit(event) {
+            event.preventDefault();  // Empêcher la soumission par défaut
+
+            // Récupérer les valeurs du formulaire
+            var name = document.querySelector("input[name='name']").value;
+            var phone = document.querySelector("input[name='phone']").value;
+            var subject = document.querySelector("input[name='subject']").value;
+            var message = document.querySelector("textarea[name='message']").value;
+
+            // Créer le texte du message à envoyer via WhatsApp
+            var whatsappMessage = `Nom: ${name}%0ANuméro: ${phone}%0Aموضوع: ${subject}%0AMessage: ${message}`;
+
+            // URL WhatsApp pour envoyer le message
+            var whatsappUrl = `https://wa.me/212608975435?text=${whatsappMessage}`;
+
+            // Rediriger vers WhatsApp
+            window.open(whatsappUrl, "_blank");
+
+            // Fermer la modale
+            toggleWhatsappModal();
+        }
+
+        // Assurez-vous que la modale de menu est cachée au chargement de la page
+        window.onload = function() {
+            document.getElementById("menu").style.display = "none";
+        };
     </script>
 </body>
 </html>
