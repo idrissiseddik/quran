@@ -3,328 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الصفحة الرئيسية ـ إذاعات القرآن الكريم ، التفسير و السيرة النبوية</title>
+    <title>تذكير</title>
     <style>
+        /* Corps de la page */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #222;
-            color: #fff;
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #444444; /* Fond gris foncé */
+            font-family: 'Amiri', serif;
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Effet de particules sous forme de messages qui montent */
+        .background-animation {
+            position: absolute;
+            bottom: 0; /* Démarre du bas de la page */
+            left: 0;
+            width: 100%;
             height: 100%;
+            z-index: -1;
+            overflow: hidden;
         }
 
-        /* Style pour le message de salutation */
-        .greeting {
-            background-color: #333;
-            color: #28a745;
-            padding: 10px;
-            text-align: center;
-            font-size: 24px;
-        }
-
-        header {
-            background-color: #333;
-            color: #28a745;
-            padding: 10px;
-            text-align: center;
-            font-size: 24px;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Icône du menu et texte */
-        .menu-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .menu-toggle {
-            cursor: pointer;
+        .background-animation span {
+            position: absolute;
             font-size: 30px;
-            color: #fff;
-            margin-bottom: 10px;
-            transition: transform 0.3s ease; /* Animation pour le changement d'icône */
+            color: rgba(255, 255, 255, 0.8);
+            animation: moveUp 10s infinite linear;
+            opacity: 0;
         }
 
-        .menu-text {
-            font-size: 18px;
-            color: #fff;
+        /* Animation des messages qui montent du bas vers le haut */
+        @keyframes moveUp {
+            0% {
+                transform: translateY(100%) rotate(0deg); /* Commence du bas */
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100%) rotate(360deg); /* Monte vers le haut */
+                opacity: 0;
+            }
         }
 
-        /* Style pour la modale du menu */
-        .menu {
-            display: none;  /* La modale est masquée par défaut */
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);  /* Centrer la modale */
-            background-color: #333;
-            width: 300px;   /* Largeur de la modale */
-            height: 300px;  /* Hauteur de la modale (forme carrée) */
-            z-index: 10;
-            padding: 20px;
-            border-radius: 10px;
-            transition: all 0.3s ease-in-out;  /* Animation pour l'apparition du menu */
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        /* Carte */
+        .card {
+            background: rgba(255, 255, 255, 0.95); /* Fond blanc semi-transparent */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px; /* Réduction de la largeur de la carte */
+            width: 90%;
+            animation: fadeIn 1.5s ease-in-out;
         }
 
-        .menu a {
-            color: #fff;
-            padding: 12px 20px;
-            text-decoration: none;
-            text-align: center;
-            font-size: 18px;
-            margin: 10px 0;
-            border-radius: 5px;
-            display: block;
-            width: 80%;
-            box-sizing: border-box;
+        @keyframes fadeIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
-        .menu a:hover {
-            background-color: #218838;
-        }
-
-        .aya-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            flex: 1;
-            text-align: center;
-            position: relative;
-            padding-top: 30px; /* Décaler l'ayeh vers le bas */
-        }
-
-        .aya-intro {
-            font-size: 18px;
+        .card h1 {
+            font-size: 36px;
+            color: #333;
             margin-bottom: 20px;
         }
 
-        .aya {
-            font-size: 24px;
-            line-height: 1.8;
-            position: relative;
-        }
-
-        .aya-confirmation {
+        .card p {
             font-size: 20px;
-            position: absolute;
-            left: 0;
-            bottom: -30px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .card p:nth-child(3) {
+            font-weight: bold;
+            color: #222;
+        }
+
+        /* Bouton */
+        .card button {
+            padding: 15px 30px;
+            font-size: 20px;
+            background: linear-gradient(to right, #43a047, #66bb6a); /* Vert élégant */
             color: #fff;
-        }
-
-        .aya-source {
-            margin-top: 10px;
-            font-size: 18px;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            font-size: 14px;
-            margin-top: 20px; /* Ajout d'un espacement avant le footer */
-        }
-
-        /* Style pour l'icône WhatsApp */
-        .whatsapp-icon {
-            cursor: pointer;
-            position: fixed;
-            bottom: 80px; /* Ajouter un espace de 20px entre l'icône et le footer */
-            left: 50%;  /* Centrer l'icône horizontalement */
-            transform: translateX(-50%); /* Centrer l'icône */
-            width: 50px;
-            height: 50px;
-            z-index: 100;  /* S'assurer que l'icône est toujours au-dessus de tout autre contenu */
-        }
-
-        /* Message au-dessus de l'icône WhatsApp */
-        .whatsapp-message {
-            position: fixed;
-            bottom: 130px; /* Placer le message juste au-dessus de l'icône */
-            left: 50%;
-            transform: translateX(-50%); /* Centrer le message */
-            font-size: 16px;
-            color: #28a745;
-            text-align: center;
-            z-index: 100;
-        }
-
-        /* Style pour la modale du formulaire de contact */
-        .whatsapp-modal {
-            display: none;  /* La modale est masquée au départ */
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);  /* Centrer la modale */
-            background-color: #333;
-            width: 80%;
-            max-width: 400px;
-            padding: 20px;
-            border-radius: 10px;
-            z-index: 20;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .whatsapp-modal input, .whatsapp-modal textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #28a745;
-            background-color: #222;
-            color: #fff;
-            box-sizing: border-box;
-            text-align: center; /* Centrer le texte dans les champs */
-        }
-
-        .whatsapp-modal button {
-            background-color: #28a745;
-            color: #fff;
-            padding: 10px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
-            width: 100%;  /* Centrer le bouton */
+            transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
         }
 
-        .whatsapp-modal button:hover {
-            background-color: #218838;
+        .card button:hover {
+            transform: scale(1.1); /* Animation au survol */
+            background: linear-gradient(to right, #388e3c, #4caf50);
+            box-shadow: 0 4px 20px rgba(0, 255, 0, 0.5);
         }
 
-        /* Icône de fermeture de la modale */
-        .whatsapp-modal .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 25px;
-            color: #fff;
-            cursor: pointer;
+        .card button:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
 <body>
-    <!-- Message de salutation -->
-    <div class="greeting">
-        السلام عليكم ورحمة الله وبركاته
+    <!-- Effet d'animation de fond avec des messages qui montent -->
+    <div class="background-animation">
+        <span style="left: 10%; animation-duration: 8s;">سبحان الله</span>
+        <span style="left: 20%; animation-duration: 6s;">الحمد لله</span>
+        <span style="left: 30%; animation-duration: 10s;">الله أكبر</span>
+        <span style="left: 40%; animation-duration: 7s;">سبحان الله</span>
+        <span style="left: 50%; animation-duration: 9s;">الحمد لله</span>
+        <span style="left: 60%; animation-duration: 5s;">الله أكبر</span>
+        <span style="left: 70%; animation-duration: 8s;">سبحان الله</span>
+        <span style="left: 80%; animation-duration: 6s;">الحمد لله</span>
+        <span style="left: 90%; animation-duration: 7s;">الله أكبر</span>
     </div>
 
-    <header>
-        <!-- Icône de menu et texte centré -->
-        <div class="menu-container">
-            <span class="menu-toggle" id="menuToggle" onclick="toggleMenu()">&#9776;</span>
-            <span class="menu-text">قائمة</span>
-        </div>
-    </header>
-
-    <!-- Contenu de l'ayah -->
-    <div class="aya-container">
-        <p class="aya-intro">يقول الله تعالى في كتابه العزيز:</p>
-        <div class="aya">
-            <p>﷽ <br> وَإِذَا قُرِئَ ٱلۡقُرۡءَانُ فَٱسۡتَمِعُواْ لَهُۥ وَأَنصِتُواْ لَعَلَّكُمۡ تُرۡحَمُونَ</p>
-            <p class="aya-confirmation">صدق الله العظيم</p>
-        </div>
-        <p class="aya-source">(سورة الأعراف: ٢٠٤)</p>
+    <!-- Carte centrale -->
+    <div class="card">
+        <h1>تذكير</h1>
+        <p>هل صليت اليوم على سيد الخلق سيدنا محمد صلى الله عليه وسلم؟</p>
+        <p>
+            اللهم صل على سيدنا محمد وعلى آل سيدنا محمد كما صليت على سيدنا إبراهيم 
+            وعلى آل سيدنا إبراهيم وبارك على سيدنا محمد وعلى آل سيدنا محمد كما باركت 
+            على سيدنا إبراهيم وعلى آل سيدنا إبراهيم في العالمين إنك حميد مجيد.
+        </p>
+        <button onclick="window.location.href='home.html'">تمت القراءة</button>
     </div>
-
-    <!-- Menu dynamique sous l'ayah dans une modale -->
-    <div class="menu" id="menu">
-        <a href="reciteurs.html">إذاعات القرآن الكريم</a>
-        <a href="explain.html">إذاعات التفسير و السيرة</a>
-        <a href="vyt.html">دروس دينية على اليوتيب</a>
-        <a href="sv.html">معلومات دينية</a>
-    </div>
-
-    <!-- Icône WhatsApp pour ouvrir le formulaire -->
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon" class="whatsapp-icon" onclick="toggleWhatsappModal()">
-
-    <!-- Formulaire de contact via WhatsApp -->
-    <div class="whatsapp-modal" id="whatsappModal">
-        <span class="close-btn" onclick="toggleWhatsappModal()">&times;</span>
-        <h3>تواصل معنا عبر واتساب</h3>
-        <form id="whatsappForm" onsubmit="handleFormSubmit(event)">
-            <input type="text" name="name" placeholder="الاسم" required>
-            <input type="tel" name="phone" placeholder="رقم الهاتف" required>
-            <input type="text" name="subject" placeholder="الموضوع" required>
-            <textarea name="message" placeholder="الرسالة" rows="5" required></textarea>
-            <button type="submit">إرسال</button>
-        </form>
-    </div>
-
-  <footer>
-    إنشاء و تصميم أخوكم في الله م.الصديق الإدريسي<br>
-    لا تنسونا من صالح دعائكم و لكم بالمثل 
-  </footer>
-
-    <script>
-        // Fonction pour afficher ou masquer la modale du menu et changer l'icône
-        function toggleMenu() {
-            var menu = document.getElementById("menu");
-            var menuToggle = document.getElementById("menuToggle");
-            if (menu.style.display === "none" || menu.style.display === "") {
-                menu.style.display = "block";
-                menuToggle.innerHTML = "&times;";  // Changer l'icône en croix
-            } else {
-                menu.style.display = "none";
-                menuToggle.innerHTML = "&#9776;";  // Changer l'icône en tirets
-            }
-        }
-
-        // Fonction pour afficher ou masquer la modale WhatsApp
-        function toggleWhatsappModal() {
-            var modal = document.getElementById("whatsappModal");
-            if (modal.style.display === "none" || modal.style.display === "") {
-                modal.style.display = "block";
-            } else {
-                modal.style.display = "none";
-            }
-        }
-
-        // Fonction pour gérer la soumission du formulaire et rediriger vers WhatsApp
-        function handleFormSubmit(event) {
-            event.preventDefault();  // Empêcher la soumission par défaut
-
-            // Récupérer les valeurs du formulaire
-            var name = document.querySelector("input[name='name']").value;
-            var phone = document.querySelector("input[name='phone']").value;
-            var subject = document.querySelector("input[name='subject']").value;
-            var message = document.querySelector("textarea[name='message']").value;
-
-            // Créer le texte du message à envoyer via WhatsApp
-            var whatsappMessage = `Nom: ${name}%0ANuméro: ${phone}%0Aموضوع: ${subject}%0AMessage: ${message}`;
-
-            // URL WhatsApp pour envoyer le message
-            var whatsappUrl = `https://wa.me/212608975435?text=${whatsappMessage}`;
-
-            // Rediriger vers WhatsApp
-            window.open(whatsappUrl, "_blank");
-
-            // Fermer la modale
-            toggleWhatsappModal();
-        }
-
-        // Assurez-vous que la modale de menu est cachée au chargement de la page
-        window.onload = function() {
-            document.getElementById("menu").style.display = "none";
-        };
-    </script>
 </body>
 </html>
